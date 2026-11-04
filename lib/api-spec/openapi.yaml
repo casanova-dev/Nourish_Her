@@ -1,0 +1,74 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+paths:
+  /cycle:
+    post:
+      operationId: saveCycle
+      tags: [cycle]
+      summary: Save cycle data
+      description: Saves a user's selected cycle date
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CycleData"
+      responses:
+        "200":
+          description: Cycle data saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CycleResponse"
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+components:
+  schemas:
+    CycleData:
+      type: object
+      properties:
+        cycleDate:
+          type: string
+          format: date
+      required:
+        - cycleDate
+
+    CycleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+        - message
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
